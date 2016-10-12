@@ -24,6 +24,8 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
@@ -32,12 +34,11 @@ import org.apache.activemq.artemis.api.core.client.ClientSessionFactory;
 import org.apache.activemq.artemis.api.core.client.ServerLocator;
 import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
 import org.apache.activemq.artemis.api.jms.JMSFactoryType;
-import org.apache.activemq.artemis.core.config.Configuration;
 import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
 import org.apache.activemq.artemis.core.remoting.impl.netty.TransportConstants;
-import org.apache.activemq.artemis.core.server.ActiveMQServer;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.apache.activemq.artemis.jms.client.ActiveMQDestination;
+import org.apache.activemq.artemis.tests.integration.paging.PageCountSyncServer;
 import org.apache.activemq.artemis.tests.util.ActiveMQTestBase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -81,19 +82,17 @@ public class JmsNettyNioStressTest extends ActiveMQTestBase {
    }
 
    public void doTestStressSend(final boolean netty) throws Exception {
-      // first set up the server
-      Map<String, Object> params = new HashMap<>();
-      params.put(TransportConstants.PORT_PROP_NAME, 61616);
-      params.put(TransportConstants.HOST_PROP_NAME, "localhost");
-      params.put(TransportConstants.USE_NIO_PROP_NAME, true);
-      // minimize threads to maximize possibility for deadlock
-      params.put(TransportConstants.NIO_REMOTING_THREADS_PROPNAME, 1);
-      params.put(TransportConstants.BATCH_DELAY, 50);
-      TransportConfiguration transportConfig = new TransportConfiguration(ActiveMQTestBase.NETTY_ACCEPTOR_FACTORY, params);
-      Configuration config = createBasicConfig().setJMXManagementEnabled(false).clearAcceptorConfigurations().addAcceptorConfiguration(transportConfig);
-      ActiveMQServer server = createServer(true, config);
-      server.getConfiguration().setThreadPoolMaxSize(2);
-      server.start();
+      final String WORD_START = "&*STARTED&*";
+      final CountDownLatch latch = new CountDownLatch(1);
+      Runnable runnable = new Runnable() {
+         @Override
+         public void run() {
+            latch.countDown();
+         }
+      };
+
+      PageCountSyncServer.spawnVMWithLogMacher(WORD_START, runnable, getTestDir(), 300000);
+      assertTrue("Server didn't start in 30 seconds", latch.await(30, TimeUnit.SECONDS));
 
       // now the client side
       Map<String, Object> connectionParams = new HashMap<>();
@@ -106,7 +105,7 @@ public class JmsNettyNioStressTest extends ActiveMQTestBase {
       final ServerLocator locator = createNonHALocator(netty);
 
       // each thread will do this number of transactions
-      final int numberOfMessages = 100;
+      final int numberOfMessages = 10000;
 
       // these must all be the same
       final int numProducers = 30;
@@ -260,7 +259,7 @@ public class JmsNettyNioStressTest extends ActiveMQTestBase {
       // check that the overall transaction count reaches the expected number,
       // which would indicate that the system didn't stall
       int timeoutCounter = 0;
-      int maxSecondsToWait = 60;
+      int maxSecondsToWait = 270;
       while (timeoutCounter < maxSecondsToWait && totalCount.get() < totalExpectedCount) {
          timeoutCounter++;
          Thread.sleep(1000);
@@ -274,8 +273,6 @@ public class JmsNettyNioStressTest extends ActiveMQTestBase {
       connectionProducer.close();
       connectionConsumerProducer.close();
       connectionConsumer.close();
-
-      server.stop();
    }
    // Package protected ---------------------------------------------
 
