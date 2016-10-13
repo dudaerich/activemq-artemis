@@ -87,45 +87,45 @@
 
    </properties>
 
-   <build>
-      <plugins>
+   <!--<build>-->
+      <!--<plugins>-->
 
-         <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.10.1</version>
-            <executions>
-               <execution>
-                  <id>javadoc-jar</id>
-                  <phase>package</phase>
-                  <goals>
-                     <goal>jar</goal>
-                  </goals>
-                  <configuration>
-                     <useStandardDocletOptions>true</useStandardDocletOptions>
-                     <minmemory>128m</minmemory>
-                     <maxmemory>512m</maxmemory>
-                     <quiet>false</quiet>
-                     <!-- switch on dependency-driven aggregation -->
-                     <includeDependencySources>true</includeDependencySources>
+         <!--<plugin>-->
+            <!--<artifactId>maven-javadoc-plugin</artifactId>-->
+            <!--<version>2.10.1</version>-->
+            <!--<executions>-->
+               <!--<execution>-->
+                  <!--<id>javadoc-jar</id>-->
+                  <!--<phase>package</phase>-->
+                  <!--<goals>-->
+                     <!--<goal>jar</goal>-->
+                  <!--</goals>-->
+                  <!--<configuration>-->
+                     <!--<useStandardDocletOptions>true</useStandardDocletOptions>-->
+                     <!--<minmemory>128m</minmemory>-->
+                     <!--<maxmemory>512m</maxmemory>-->
+                     <!--<quiet>false</quiet>-->
+                     <!--&lt;!&ndash; switch on dependency-driven aggregation &ndash;&gt;-->
+                     <!--<includeDependencySources>true</includeDependencySources>-->
 
-                     <dependencySourceIncludes>
-                        <!-- include ONLY dependencies I control -->
-                        <dependencySourceInclude>org.apache.activemq:artemis-core-client</dependencySourceInclude>
-                        <dependencySourceInclude>org.apache.activemq:artemis-jms-client</dependencySourceInclude>
-                        <dependencySourceInclude>org.apache.activemq:artemis-server</dependencySourceInclude>
-                        <dependencySourceInclude>org.apache.activemq:artemis-jms-server</dependencySourceInclude>
-                        <dependencySourceInclude>org.apache.activemq:artemis-journal</dependencySourceInclude>
-                        <dependencySourceInclude>org.apache.activemq:artemis-selector</dependencySourceInclude>
-                     </dependencySourceIncludes>
-                     <quiet>false</quiet>
-                     <aggregate>true</aggregate>
-                     <excludePackageNames>org.apache.activemq.artemis.core:org.apache.activemq.artemis.utils</excludePackageNames>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
-      </plugins>
-   </build>
+                     <!--<dependencySourceIncludes>-->
+                        <!--&lt;!&ndash; include ONLY dependencies I control &ndash;&gt;-->
+                        <!--<dependencySourceInclude>org.apache.activemq:artemis-core-client</dependencySourceInclude>-->
+                        <!--<dependencySourceInclude>org.apache.activemq:artemis-jms-client</dependencySourceInclude>-->
+                        <!--<dependencySourceInclude>org.apache.activemq:artemis-server</dependencySourceInclude>-->
+                        <!--<dependencySourceInclude>org.apache.activemq:artemis-jms-server</dependencySourceInclude>-->
+                        <!--<dependencySourceInclude>org.apache.activemq:artemis-journal</dependencySourceInclude>-->
+                        <!--<dependencySourceInclude>org.apache.activemq:artemis-selector</dependencySourceInclude>-->
+                     <!--</dependencySourceIncludes>-->
+                     <!--<quiet>false</quiet>-->
+                     <!--<aggregate>true</aggregate>-->
+                     <!--<excludePackageNames>org.apache.activemq.artemis.core:org.apache.activemq.artemis.utils</excludePackageNames>-->
+                  <!--</configuration>-->
+               <!--</execution>-->
+            <!--</executions>-->
+         <!--</plugin>-->
+      <!--</plugins>-->
+   <!--</build>-->
 
    <profiles>
       <profile>
