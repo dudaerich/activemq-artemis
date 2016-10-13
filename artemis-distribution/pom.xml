@@ -176,12 +176,6 @@
          <artifactId>commons-logging</artifactId>
       </dependency>
       <dependency>
-         <groupId>org.apache.activemq</groupId>
-         <artifactId>artemis-website</artifactId>
-         <version>${project.version}</version>
-         <classifier>javadoc</classifier>
-      </dependency>
-      <dependency>
          <groupId>io.netty</groupId>
          <artifactId>netty-codec-mqtt</artifactId>
       </dependency>
