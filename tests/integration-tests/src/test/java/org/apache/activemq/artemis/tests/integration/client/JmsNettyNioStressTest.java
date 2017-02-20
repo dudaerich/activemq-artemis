@@ -259,7 +259,7 @@ public class JmsNettyNioStressTest extends ActiveMQTestBase {
       // check that the overall transaction count reaches the expected number,
       // which would indicate that the system didn't stall
       int timeoutCounter = 0;
-      int maxSecondsToWait = 270;
+      int maxSecondsToWait = 1200;
       while (timeoutCounter < maxSecondsToWait && totalCount.get() < totalExpectedCount) {
          timeoutCounter++;
          Thread.sleep(1000);
