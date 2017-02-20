@@ -91,7 +91,7 @@ public class JmsNettyNioStressTest extends ActiveMQTestBase {
          }
       };
 
-      PageCountSyncServer.spawnVMWithLogMacher(WORD_START, runnable, getTestDir(), 300000);
+      PageCountSyncServer.spawnVMWithLogMacher(WORD_START, runnable, getTestDir(), 1200000);
       assertTrue("Server didn't start in 30 seconds", latch.await(30, TimeUnit.SECONDS));
 
       // now the client side
