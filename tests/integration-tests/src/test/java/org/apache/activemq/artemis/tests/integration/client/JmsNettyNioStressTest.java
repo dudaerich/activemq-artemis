@@ -108,9 +108,9 @@ public class JmsNettyNioStressTest extends ActiveMQTestBase {
       final int numberOfMessages = 10000;
 
       // these must all be the same
-      final int numProducers = 30;
-      final int numConsumerProducers = 30;
-      final int numConsumers = 30;
+      final int numProducers = 100;
+      final int numConsumerProducers = 100;
+      final int numConsumers = 100;
 
       // each produce, consume+produce and consume increments this counter
       final AtomicInteger totalCount = new AtomicInteger(0);
