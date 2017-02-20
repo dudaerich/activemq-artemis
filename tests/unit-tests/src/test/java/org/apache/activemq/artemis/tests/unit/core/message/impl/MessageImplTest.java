@@ -286,18 +286,13 @@ public class MessageImplTest extends ActiveMQTestBase {
             }
 
             for (int i = 0; i < RUNS; i++) {
-               ActiveMQBuffer buf = null;
                try {
                   SessionSendMessage ssm = new SessionSendMessage(msg);
-                  buf = ssm.encode(null);
+                  ActiveMQBuffer buf = ssm.encode(null);
                   simulateRead(buf);
                } catch (Throwable e) {
                   e.printStackTrace();
                   errors.incrementAndGet();
-               } finally {
-                  if ( buf != null ) {
-                     buf.release();
-                  }
                }
             }
          }

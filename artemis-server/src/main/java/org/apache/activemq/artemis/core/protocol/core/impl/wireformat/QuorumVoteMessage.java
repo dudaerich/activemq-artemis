@@ -21,7 +21,6 @@ import org.apache.activemq.artemis.api.core.SimpleString;
 import org.apache.activemq.artemis.core.protocol.core.impl.PacketImpl;
 import org.apache.activemq.artemis.core.server.cluster.qourum.QuorumVoteHandler;
 import org.apache.activemq.artemis.core.server.cluster.qourum.Vote;
-import org.apache.activemq.artemis.spi.core.protocol.RemotingConnection;
 
 public class QuorumVoteMessage extends PacketImpl {
 
@@ -39,11 +38,6 @@ public class QuorumVoteMessage extends PacketImpl {
       super(QUORUM_VOTE);
       this.handler = handler;
       this.vote = vote;
-   }
-
-   @Override
-   public ActiveMQBuffer encode(final RemotingConnection connection) {
-      return encode(connection,false);
    }
 
    @Override

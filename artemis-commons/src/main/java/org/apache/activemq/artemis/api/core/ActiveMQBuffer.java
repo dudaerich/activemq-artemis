@@ -1149,10 +1149,4 @@ public interface ActiveMQBuffer extends DataInput {
     * @return A converted NIO Buffer
     */
    ByteBuffer toByteBuffer(int index, int length);
-
-   /**
-   * Release any underlying resources held by this buffer
-   */
-   void release();
-
 }
