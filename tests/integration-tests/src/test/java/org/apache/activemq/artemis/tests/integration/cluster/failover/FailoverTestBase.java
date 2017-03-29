@@ -220,11 +220,20 @@ public abstract class FailoverTestBase extends ActiveMQTestBase {
       super.tearDown();
       Assert.assertEquals(0, InVMRegistry.instance.size());
 
-      backupServer = null;
+      if (backupServer != null) {
+         backupServer.stop();
+         backupServer = null;
+      }
 
-      liveServer = null;
+      if (liveServer != null) {
+         liveServer.stop();
+         liveServer = null;
+      }
 
-      nodeManager = null;
+      if (nodeManager != null) {
+         nodeManager.stop();
+         nodeManager = null;
+      }
 
       try {
          ServerSocket serverSocket = new ServerSocket(61616);
