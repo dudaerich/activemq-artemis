@@ -18,7 +18,6 @@ package org.apache.activemq.artemis.jms.persistence.impl.journal;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -79,9 +78,8 @@ public final class JMSJournalStorageManagerImpl implements JMSStorageManager {
                                        final IDGenerator idGenerator,
                                        final Configuration config,
                                        final ReplicationManager replicator) {
-      final EnumSet<JournalType> supportedJournalTypes = EnumSet.allOf(JournalType.class);
-      if (!supportedJournalTypes.contains(config.getJournalType())) {
-         throw new IllegalArgumentException("Only " + supportedJournalTypes + " are supported Journal types");
+      if (config.getJournalType() != JournalType.NIO && config.getJournalType() != JournalType.ASYNCIO) {
+         throw new IllegalArgumentException("Only NIO and AsyncIO are supported journals");
       }
 
       this.config = config;

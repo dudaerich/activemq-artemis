@@ -548,7 +548,7 @@ public interface Configuration {
    Configuration setJournalDirectory(String dir);
 
    /**
-    * Returns the type of journal used by this server ({@code NIO}, {@code ASYNCIO} or {@code MAPPED}).
+    * Returns the type of journal used by this server (either {@code NIO} or {@code ASYNCIO}).
     * <br>
     * Default value is ASYNCIO.
     */

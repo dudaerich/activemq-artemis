@@ -469,19 +469,22 @@ public final class FileConfigurationParser extends XMLConfigurationUtil {
 
       String s = getString(e, "journal-type", config.getJournalType().toString(), Validators.JOURNAL_TYPE);
 
-      config.setJournalType(JournalType.getType(s));
-
-      if (config.getJournalType() == JournalType.ASYNCIO) {
+      if (s.equals(JournalType.NIO.toString())) {
+         config.setJournalType(JournalType.NIO);
+      } else if (s.equals(JournalType.ASYNCIO.toString())) {
          // https://jira.jboss.org/jira/browse/HORNETQ-295
          // We do the check here to see if AIO is supported so we can use the correct defaults and/or use
          // correct settings in xml
          // If we fall back later on these settings can be ignored
          boolean supportsAIO = AIOSequentialFileFactory.isSupported();
 
-         if (!supportsAIO) {
+         if (supportsAIO) {
+            config.setJournalType(JournalType.ASYNCIO);
+         } else {
             if (validateAIO) {
                ActiveMQServerLogger.LOGGER.AIONotFound();
             }
+
             config.setJournalType(JournalType.NIO);
          }
       }

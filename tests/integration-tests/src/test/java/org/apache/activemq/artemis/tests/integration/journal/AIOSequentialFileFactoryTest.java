@@ -44,7 +44,7 @@ public class AIOSequentialFileFactoryTest extends SequentialFileFactoryTestBase 
       SequentialFile file = factory.createSequentialFile("filtetmp.log");
       file.open();
       ByteBuffer buff = factory.newBuffer(10);
-      Assert.assertEquals(factory.getAlignment(), buff.limit());
+      Assert.assertEquals(512, buff.limit());
       file.close();
       factory.releaseBuffer(buff);
    }

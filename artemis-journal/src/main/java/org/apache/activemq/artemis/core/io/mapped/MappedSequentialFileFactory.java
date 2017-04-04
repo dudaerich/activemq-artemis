@@ -162,12 +162,6 @@ public final class MappedSequentialFileFactory implements SequentialFileFactory 
    }
 
    @Override
-   public SequentialFileFactory setAlignment(int alignment) {
-      // no op
-      return this;
-   }
-
-   @Override
    public int calculateBlockSize(int bytes) {
       return bytes;
    }

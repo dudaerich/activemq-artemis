@@ -54,6 +54,11 @@ public final class NIOSequentialFile extends AbstractSequentialFile {
    }
 
    @Override
+   public int getAlignment() {
+      return 1;
+   }
+
+   @Override
    public int calculateBlockStart(final int position) {
       return position;
    }

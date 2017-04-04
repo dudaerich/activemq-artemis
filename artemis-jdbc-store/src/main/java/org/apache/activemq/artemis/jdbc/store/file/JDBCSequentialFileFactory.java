@@ -177,12 +177,6 @@ public class JDBCSequentialFileFactory implements SequentialFileFactory, ActiveM
    }
 
    @Override
-   public JDBCSequentialFileFactory setAlignment(int alignment) {
-      // no op
-      return this;
-   }
-
-   @Override
    public int calculateBlockSize(final int bytes) {
       return bytes;
    }

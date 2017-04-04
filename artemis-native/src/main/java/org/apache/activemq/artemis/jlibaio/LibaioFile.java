@@ -39,7 +39,9 @@ public final class LibaioFile<Callback extends SubmitInfo> implements AutoClosea
    }
 
    public int getBlockSize() {
-      return LibaioContext.getBlockSizeFD(fd);
+      return 512;
+      // FIXME
+      //return LibaioContext.getBlockSizeFD(fd);
    }
 
    public boolean lock() {
