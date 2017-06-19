@@ -179,23 +179,7 @@ public final class AIOSequentialFileFactory extends AbstractSequentialFileFactor
    @Override
    public int getAlignment() {
       if (alignment < 0) {
-
-         File checkFile = null;
-
-         try {
-            journalDir.mkdirs();
-            checkFile = File.createTempFile("journalCheck", ".tmp", journalDir);
-            checkFile.mkdirs();
-            checkFile.createNewFile();
-            alignment = LibaioContext.getBlockSize(checkFile);
-         } catch (Throwable e) {
-            logger.warn(e.getMessage(), e);
-            alignment = 512;
-         } finally {
-            if (checkFile != null) {
-               checkFile.delete();
-            }
-         }
+         alignment = 512;
       }
       return alignment;
    }
