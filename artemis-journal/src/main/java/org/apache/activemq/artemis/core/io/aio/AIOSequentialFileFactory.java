@@ -179,7 +179,7 @@ public final class AIOSequentialFileFactory extends AbstractSequentialFileFactor
    @Override
    public int getAlignment() {
       if (alignment < 0) {
-         alignment = 512;
+         alignment = 1048576;
       }
       return alignment;
    }
