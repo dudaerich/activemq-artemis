@@ -549,7 +549,7 @@ public class QueueImpl implements Queue {
                !pageSubscription.isPaging()) {
                // We must block on the executor to ensure any async deliveries have completed or we might get out of order
                // deliveries
-               if (flushExecutor() && flushDeliveriesInTransit()) {
+               if (internalFlushExecutor(500, false) && flushDeliveriesInTransit()) {
                   // Go into direct delivery mode
                   directDeliver = true;
                }
@@ -673,7 +673,7 @@ public class QueueImpl implements Queue {
 
    @Override
    public boolean flushExecutor() {
-      boolean ok = internalFlushExecutor(10000);
+      boolean ok = internalFlushExecutor(10000, true);
 
       if (!ok) {
          ActiveMQServerLogger.LOGGER.errorFlushingExecutorsOnQueue();
@@ -682,14 +682,14 @@ public class QueueImpl implements Queue {
       return ok;
    }
 
-   private boolean internalFlushExecutor(long timeout) {
+   private boolean internalFlushExecutor(long timeout, boolean log) {
       FutureLatch future = new FutureLatch();
 
       getExecutor().execute(future);
 
       boolean result = future.await(timeout);
 
-      if (!result) {
+      if (log && !result) {
          ActiveMQServerLogger.LOGGER.queueBusy(this.name.toString(), timeout);
       }
       return result;
