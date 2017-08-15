@@ -811,7 +811,10 @@ public final class ClientSessionImpl implements ClientSessionInternal, FailureLi
       ClientConsumerInternal consumer = getConsumer(consumerID);
 
       if (consumer != null) {
+         logger.tracef("Calling consumer.handleMessage for message=%s", message);
          consumer.handleMessage(message);
+      } else {
+         logger.tracef("Consumer is null for consumerId=%s and message=%s", consumerID, message);
       }
    }
 

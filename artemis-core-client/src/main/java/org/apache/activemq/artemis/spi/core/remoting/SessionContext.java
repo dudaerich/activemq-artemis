@@ -36,8 +36,11 @@ import org.apache.activemq.artemis.core.message.impl.MessageInternal;
 import org.apache.activemq.artemis.spi.core.protocol.RemotingConnection;
 import org.apache.activemq.artemis.utils.IDGenerator;
 import org.apache.activemq.artemis.utils.SimpleIDGenerator;
+import org.jboss.logging.Logger;
 
 public abstract class SessionContext {
+
+   private static final Logger log = Logger.getLogger(SessionContext.class);
 
    protected ClientSessionInternal session;
 
@@ -96,7 +99,10 @@ public abstract class SessionContext {
 
       ClientSessionInternal session = this.session;
       if (session != null) {
+         log.tracef("Calling handleReceiveMessage for message=%s", message);
          session.handleReceiveMessage(consumerID, message);
+      } else {
+         log.tracef("Session is null for message=%s", message);
       }
    }
 

@@ -504,7 +504,7 @@ public final class ClientConsumerImpl implements ClientConsumerInternal {
    @Override
    public void clearAtFailover() {
       if (logger.isTraceEnabled()) {
-         logger.trace(this + "::ClearAtFailover");
+         logger.trace(this + "::ClearAtFailover", new Throwable("trace"));
       }
       clearBuffer();
 
@@ -586,14 +586,20 @@ public final class ClientConsumerImpl implements ClientConsumerInternal {
       }
 
       // Add it to the buffer
+      logger.tracef("Adding message=%s to buffer.", message);
       buffer.addTail(message, message.getPriority());
+      logger.tracef("Checking handler=%s for message=%s", handler, message);
 
       if (handler != null) {
          // Execute using executor
          if (!stopped) {
+            logger.tracef("Queueing executor for message=%s", message);
             queueExecutor();
+         } else {
+            logger.tracef("Executor was not queued because consumer is stopped. Message=%s", message);
          }
       } else {
+         logger.tracef("Executor was not queued because handler is null. Message=%s", message);
          notify();
       }
    }
