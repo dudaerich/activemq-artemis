@@ -781,7 +781,7 @@ public final class ClusterConnectionImpl implements ClusterConnection, AfterConn
       targetLocator.setMinLargeMessageSize(minLargeMessageSize);
 
       // No producer flow control on the bridges, as we don't want to lock the queues
-      targetLocator.setProducerWindowSize(-1);
+      targetLocator.setProducerWindowSize(producerWindowSize);
 
       targetLocator.setAfterConnectionInternalListener(this);
 
