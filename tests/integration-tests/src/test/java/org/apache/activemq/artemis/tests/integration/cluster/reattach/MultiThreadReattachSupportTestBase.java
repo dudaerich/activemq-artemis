@@ -22,6 +22,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.activemq.artemis.api.core.ActiveMQNotConnectedException;
+import org.apache.activemq.artemis.api.core.ActiveMQUnBlockedException;
 import org.apache.activemq.artemis.api.core.client.ClientSession;
 import org.apache.activemq.artemis.api.core.client.ClientSessionFactory;
 import org.apache.activemq.artemis.api.core.client.ServerLocator;
@@ -103,14 +104,18 @@ public abstract class MultiThreadReattachSupportTestBase extends ActiveMQTestBas
                try {
                   test.run(sf, threadNum);
                } catch (Throwable t) {
-                  throwable = t;
 
-                  log.error("Failed to run test", t);
+                  if (!(t instanceof ActiveMQUnBlockedException)) {
 
-                  // Case a failure happened here, it should print the Thread dump
-                  // Sending it to System.out, as it would show on the Tests report
-                  System.out.println(ActiveMQTestBase.threadDump(" - fired by MultiThreadRandomReattachTestBase::runTestMultipleThreads (" + t.getLocalizedMessage() +
-                                                                    ")"));
+                     throwable = t;
+
+                     log.error("Failed to run test", t);
+
+                     // Case a failure happened here, it should print the Thread dump
+                     // Sending it to System.out, as it would show on the Tests report
+                     System.out.println(ActiveMQTestBase.threadDump(" - fired by MultiThreadRandomReattachTestBase::runTestMultipleThreads (" + t.getLocalizedMessage() +
+                           ")"));
+                  }
                }
             }
          }
