@@ -188,13 +188,6 @@ public abstract class ActiveMQScheduledComponent implements ActiveMQComponent, R
       return this;
    }
 
-   public synchronized ActiveMQScheduledComponent setPeriod(long period, TimeUnit unit) {
-      this.period = period;
-      this.timeUnit = unit;
-      restartIfNeeded();
-      return this;
-   }
-
    public long getInitialDelay() {
       return initialDelay;
    }
