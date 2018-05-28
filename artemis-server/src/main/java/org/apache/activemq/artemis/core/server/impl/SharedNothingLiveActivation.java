@@ -258,11 +258,14 @@ public class SharedNothingLiveActivation extends LiveActivation {
     * @throws Exception
     */
    private boolean isNodeIdUsed() throws Exception {
-      if (activeMQServer.getConfiguration().getClusterConfigurations().isEmpty())
+      if (activeMQServer.getConfiguration().getClusterConfigurations().isEmpty()) {
+         logger.trace("debug.isNodeIdUsed return false #1");
          return false;
+      }
       SimpleString nodeId0;
       try {
          nodeId0 = activeMQServer.getNodeManager().readNodeId();
+         logger.tracef("debug.isNodeIdUsed nodeId0=%s #2", nodeId0);
       } catch (ActiveMQIllegalStateException e) {
          nodeId0 = null;
       }
@@ -276,10 +279,14 @@ public class SharedNothingLiveActivation extends LiveActivation {
          locator.setReconnectAttempts(0);
          try (ClientSessionFactoryInternal factory = locator.connectNoWarnings()) {
             // Just try connecting
-            listener.latch.await(5, TimeUnit.SECONDS);
+            boolean latch = listener.latch.await(5, TimeUnit.SECONDS);
+            logger.tracef("debug.isNodeIdUsed latch=%s #3", latch);
          } catch (Exception notConnected) {
+            logger.trace("debug.isNodeIdUsed return false #4", notConnected);
             return false;
          }
+
+         logger.tracef("debug.isNodeIdUsed return %s #5", listener.isNodePresent);
 
          return listener.isNodePresent;
       }
